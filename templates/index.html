@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Kalkulator Tinggi Potensial Genetik</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📏 Tinggi Potensial Genetik Anak</h1>
+        <p>Tinggi potensial genetik merupakan perkiraan tinggi badan yang dapat dicapai seorang anak pada usia dewasa berdasarkan faktor genetik dari ayah dan ibu. Meskipun demikian, tinggi badan tidak hanya ditentukan oleh faktor genetik, melainkan juga dipengaruhi oleh faktor nutrisi, kondisi kesehatan, aktivitas fisik, hormon, serta lingkungan.</p>
+
+        <!-- Judul Pilihan Gender -->
+        <div class="section-title">Pilih Jenis Kelamin Anak</div>
+
+        <form method="POST" id="height-form">
+            <!-- Pilihan Gender -->
+            <div class="gender-selection">
+                <label class="gender-option">
+                    <input type="radio" name="gender" value="male" {% if form.gender == 'male' %}checked{% endif %}>
+                    <div class="avatar-container">
+                        <div class="avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" alt="Laki-laki">
+                        </div>
+                    </div>
+                    <span>Laki-laki</span>
+                </label>
+
+                <label class="gender-option">
+                    <input type="radio" name="gender" value="female" {% if form.gender == 'female' %}checked{% endif %}>
+                    <div class="avatar-container">
+                        <div class="avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="Perempuan">
+                        </div>
+                    </div>
+                    <span>Perempuan</span>
+                </label>
+            </div>
+
+            <!-- Input Ayah -->
+            <div class="input-group">
+                <label for="height_father">Tinggi Ayah (cm):</label>
+                <input type="number" name="height_father" id="height_father" step="0.1"
+                       value="{{ form.height_father }}" placeholder="Masukkan tinggi antara 55 cm hingga 280 cm"
+                       min="55" max="280" required>
+            </div>
+
+            <!-- Input Ibu -->
+            <div class="input-group">
+                <label for="height_mother">Tinggi Ibu (cm):</label>
+                <input type="number" name="height_mother" id="height_mother" step="0.1"
+                       value="{{ form.height_mother }}" placeholder="Masukkan tinggi antara 55 cm hingga 280 cm"
+                       min="55" max="280" required>
+            </div>
+
+            <!-- Tombol -->
+            <div class="buttons">
+                <button type="submit" class="btn-calculate">HITUNG TINGGI</button>
+                <button type="button" onclick="resetForm()" class="btn-reset">HITUNG LAGI</button>
+            </div>
+        </form>
+
+        <!-- Hasil -->
+        {% if result %}
+            <div class="result">
+                {% if result.error %}
+                    <p class="error">{{ result.error }}</p>
+                {% else %}
+                    <p class="result-text">{{ result }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function resetForm() {
+            document.getElementById('height_father').value = '';
+            document.getElementById('height_mother').value = '';
+            document.querySelector('input[name="gender"][value="male"]').checked = true;
+            document.querySelector('.result').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
